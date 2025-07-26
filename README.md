@@ -10,4 +10,5 @@ In this project, I build a mini honeynet in Azure and ingest log sources from va
 
     AzureNetworkAnalytics_CL (Malicious Flows allowed into our honeynet)
 
-    <img width="957" height="541" alt="Screenshot 2025-07-26 at 11 02 06 AM" src="https://github.com/user-attachments/assets/ba4f38ef-b494-4bfb-b085-b8d3a46ae913" />
+<img width="960" height="540" alt="image" src="https://github.com/user-attachments/assets/f0aadc2f-9a71-4534-87c4-6f552240ea71" />
+
