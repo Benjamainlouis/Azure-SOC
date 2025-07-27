@@ -4,7 +4,9 @@ Building a SOC + Honeynet in Azure (Live Traffic)
 
 Introduction
 
-In this project, I build a mini honeynet in Azure and ingest log sources from various resources into a Log Analytics workspace, which is then used by Microsoft Sentinel to build attack maps, trigger alerts, and create incidents. I measured some security metrics in the insecure environment for 72 hours, apply some security controls to harden the environment, measure metrics for another 24 hours, then show the results below. The metrics we will show are:
+For this project, I created a small honeynet environment in Microsoft Azure. I collected logs from different Azure resources and sent them to a Log Analytics workspace. Microsoft Sentinel then used those logs to build attack maps, generate alerts, and create incidents.
+
+First, I ran the environment without security controls for 72 hours to gather baseline metrics. After that, I applied security measures to strengthen the environment, then collected data for another 72 hours. The results from both phases are compared below. The metrics we’ll focus on include:
 
   - SecurityEvent (Windows Event Logs)
   - Syslog (Linux Event Logs)
@@ -20,7 +22,7 @@ Architecture After Hardening / Security Controls
 
 <img width="960" height="540" alt="image" src="https://github.com/user-attachments/assets/0596ec79-d16a-4b77-95a5-17a7734f3d62" />
 
-The architecture of the mini honeynet in Azure consists of the following components:
+The architecture of the honeynet in Azure consists of the following components:
 
   - Virtual Network (VNet)
   - Network Security Group (NSG)
@@ -30,10 +32,19 @@ The architecture of the mini honeynet in Azure consists of the following compone
   - Azure Storage Account
   - Microsoft Sentinel
 
-For the "BEFORE" metrics, all resources were originally deployed, exposed to the internet. The Virtual Machines had both their Network Security Groups and built-in firewalls wide open, and all other resources are deployed with public endpoints visible to the Internet; aka, no use for Private Endpoints.
+BEFORE Metrics (Insecure Setup)
 
-For the "AFTER" metrics, Network Security Groups were hardened by blocking ALL traffic with the exception of my admin workstation, and all other resources were protected by their built-in firewalls as well as Private Endpoint
+  - All resources were deployed with public access, meaning anyone on the internet could try to connect to them.
+  - The Virtual Machines had no restrictions in place. Their Network Security Groups (NSGs) allowed all traffic, and their built-in firewalls were not configured to block anything.
+  - Other services such as SQL Server were also set up with public endpoints, which made them fully visible and reachable from the internet.
+  - No Private Endpoints were used, so there was no protection to limit access to only internal or trusted sources.
 
+AFTER Metrics (Secured Setup)
+
+  - The Network Security Groups were updated to block all incoming traffic except from my admin workstation. This means only I could access the environment remotely.
+  - All other resources were protected by enabling their built-in firewalls, which limited who could reach them.
+  - Private Endpoints were also added to each resource, which means those services could now only be accessed from inside the virtual network—not from the public internet.
+    
 Attack Maps Before Hardening / Security Controls
 
 <img width="1139" height="634" alt="image" src="https://github.com/user-attachments/assets/f4be4941-fac0-41c8-ac8d-4ec0209f5983" />
@@ -41,7 +52,10 @@ Attack Maps Before Hardening / Security Controls
 <img width="1216" height="680" alt="image" src="https://github.com/user-attachments/assets/3296e70f-4cc9-4e9a-8325-5642de2a2f94" />
 
 Metrics Before Hardening / Security Controls
-The following table shows the metrics we measured in our insecure environment for 72 hours: Start Time 2025-07-17 17:04:29 Stop Time 2025-07-21 17:04:29
+
+The table below shows the security metrics collected from the insecure environment during a 72-hour observation period.
+  - Start Time: July 17, 2025, at 5:04 PM
+  - End Time: July 20, 2025, at 5:04 PM
 
 |   Metrics                | Count 
 | ------------------------ | -----
@@ -53,10 +67,11 @@ The following table shows the metrics we measured in our insecure environment fo
 
 Attack Maps Before Hardening / Security Controls
 
-All map queries actually returned no results due to no instances of malicious activity for the 24 hour period after hardening.
-Metrics After Hardening / Security Controls
-The following table shows the metrics we measured in our environment for another 72 hours, but after we have applied security controls: Start Time 2025-07-22 15:37 Stop Time 2025-07-25 15:37
+Once I applied the security controls, I continued monitoring the environment for another 72 hours. During that time, none of the attack map queries returned any results, which suggests that the hardening efforts were successful—there were no signs of malicious activity.
 
+Here are the metrics I collected during the secured period:
+  - Start Time: July 22, 2025, at 3:37 PM
+  - End Time: July 25, 2025, at 3:37 PM
 
 |   Metrics                | Count 
 | ------------------------ | -----
@@ -68,9 +83,12 @@ The following table shows the metrics we measured in our environment for another
 
 Conclusion
 
-In this project, a mini honeynet was constructed in Microsoft Azure and log sources were integrated into a Log Analytics workspace. Microsoft Sentinel was employed to trigger alerts and create incidents based on the ingested logs. Additionally, metrics were measured in the insecure environment before security controls were applied, and then again after implementing security measures. It is noteworthy that the number of security events and incidents were drastically reduced after the security controls were applied, demonstrating their effectiveness.
+In this project, I built a mini honeynet in Microsoft Azure and connected log sources to a Log Analytics workspace. Microsoft Sentinel was used to generate alerts and create incidents based on the collected logs. I measured metrics from the environment before and after applying security controls. The results clearly showed a significant drop in security events and incidents once those controls were in place, highlighting their effectiveness.
 
-It is worth noting that if the resources within the network were heavily utilized by regular users, it is likely that more security events and alerts may have been generated within the 72-hour period following the implementation of the security controls.
+It’s also important to note that if the environment had been actively used by real users, it’s likely that more security events and alerts would have been triggered during the 72-hour period following hardening—either from legitimate activity or from new attempted threats.
 
-This project helped me get in the mindset of a network and security engineer. Although all the incidents were controlled, it allowed me the oppurtuniuty to see how real world threats would attack my network. If this were a real attack, this data would give me the oppuritunity to refect on policies and changes that may be inacted to mitigate this sort of attacks from occuring in the future,
-This project helped me get in the mindset of a network and security engineer. Although all the incidents were controlled, it allowed me the oppurtuniuty to see how real world threats would attack my network. If this were a real attack, this data would give me the oppuritunity to refect on policies and changes that may be inacted to mitigate this sort of attacks from occuring in the future,
+This project really helped me step into the mindset of a network and security engineer. It gave me the opportunity to observe how real-world threats might target my environment. If this had been a live production system, the data gathered would be valuable for reviewing and adjusting security policies to better defend against similar attacks in the future.
+
+Bellow is a video deminstration of this lab
+
+https://youtu.be/9aiXfF2uxRk
