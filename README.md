@@ -89,6 +89,6 @@ It’s also important to note that if the environment had been actively used by 
 
 This project really helped me step into the mindset of a network and security engineer. It gave me the opportunity to observe how real-world threats might target my environment. If this had been a live production system, the data gathered would be valuable for reviewing and adjusting security policies to better defend against similar attacks in the future.
 
-Bellow is a video deminstration of this lab
+Bellow is a video demonstration of this lab created by me:
 
 https://youtu.be/9aiXfF2uxRk
